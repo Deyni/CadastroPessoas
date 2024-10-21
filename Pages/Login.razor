@@ -1,0 +1,44 @@
+@using Microsoft.AspNetCore.Identity
+@page "/login"
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager NavigationManager
+
+<h3>Login</h3>
+<EditForm Model="this" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Nome de usuário</label>
+        <InputText @bind-Value="username" />
+    </div>
+    <div>
+        <label>Senha</label>
+        <InputText @bind-Value="password" type="password" />
+    </div>
+    <button type="submit">Login</button>
+    @if (!string.IsNullOrEmpty(mensagemErro))
+    {
+        <p class="text-danger">@mensagemErro</p>
+    }
+</EditForm>
+
+@code {
+    private string username;
+    private string password;
+    private string mensagemErro;
+
+    private async Task HandleLogin()
+    {
+        var result = await SignInManager.PasswordSignInAsync(username, password, isPersistent: false, lockoutOnFailure: false);
+       
+        if (result.Succeeded)
+        {
+            NavigationManager.NavigateTo("/cadastro");
+        }
+        else
+        {
+            mensagemErro = "Nome de usuário ou senha inválidos.";
+        }
+    }
+}

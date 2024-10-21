@@ -1,0 +1,61 @@
+@using CadastroPessoas.Server.Models
+@page "/cadastro"
+@inject PessoaService PessoaService
+@inject NavigationManager NavigationManager
+
+<h3>Cadastro de Pessoas</h3>
+<EditForm Model="pessoa" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>Nome Completo</label>
+        <InputText @bind-Value="pessoa.NomeCompleto" />
+    </div>
+    <div>
+        <label>Data de Nascimento</label>
+        <InputDate @bind-Value="pessoa.DataNascimento" />
+    </div>
+    <div>
+        <label>CPF</label>
+        <InputText @bind-Value="pessoa.CPF" />
+    </div>
+    <div>
+        <label>Rua</label>
+        <InputText @bind-Value="pessoa.Rua" />
+    </div>
+    <div>
+        <label>Número</label>
+        <InputText @bind-Value="pessoa.Numero" />
+    </div>
+    <div>
+        <label>Cidade</label>
+        <InputText @bind-Value="pessoa.Cidade" />
+    </div>
+    <div>
+        <label>Estado</label>
+        <InputText @bind-Value="pessoa.Estado" />
+    </div>
+    <div>
+        <label>CEP</label>
+        <InputText @bind-Value="pessoa.CEP" />
+    </div>
+    <div>
+        <label>Telefone</label>
+        <InputText @bind-Value="pessoa.Telefone" />
+    </div>
+    <div>
+        <label>Email</label>
+        <InputText @bind-Value="pessoa.Email" type="email" />
+    </div>
+    <button type="submit">Cadastrar</button>
+</EditForm>
+
+@code {
+    private Pessoa pessoa = new Pessoa();
+
+    private async Task HandleValidSubmit()
+    {
+        await PessoaService.AddPessoa(pessoa);
+        NavigationManager.NavigateTo("/cadastro"); 
+    }
+}
